@@ -1,0 +1,26 @@
+#!/bin/sh
+
+tests="docker-compose exec web coverage run -m py.test tests/";
+coverage_report="docker-compose exec web coverage report --fail-under=100 --omit=tests/*";
+pycodestyle="docker-compose exec web pycodestyle .";
+$pycodestyle
+if [ $? -eq 0 ]; then
+    $tests
+    if [ $? -eq 0 ]; then
+        $coverage_report
+        if [ $? -eq 0 ]; then
+            echo "All good in the hood! Good job!"
+        else
+            echo Coverage under 100%
+	    exit 1 
+        fi
+    else
+        echo You have failling tests
+	exit 1	
+    fi 
+else
+    echo Your code is not PEP8 compliant
+    exit 1
+fi
+exit 0
+
