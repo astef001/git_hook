@@ -1,8 +1,8 @@
 #!/bin/sh
 
-tests="docker-compose exec web coverage run -m py.test tests/";
-coverage_report="docker-compose exec web coverage report --fail-under=100 --omit=tests/*";
-pycodestyle="docker-compose exec web pycodestyle .";
+tests="docker-compose exec -T web coverage run -m py.test tests/";
+coverage_report="docker-compose exec -T web coverage report --fail-under=100 --omit=tests/*";
+pycodestyle="docker-compose exec -T web pycodestyle .";
 $pycodestyle
 if [ $? -eq 0 ]; then
     $tests
